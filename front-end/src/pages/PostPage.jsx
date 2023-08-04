@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; // Import useParams from react-router-dom
+import NavigationBar from "../components/NavigationBar";
+import BlogCard from "../components/BlogCard";
 
 function PostPage() {
   const [article, setArticle] = useState(null);
@@ -23,11 +25,14 @@ function PostPage() {
 
   return (
     <div>
-      <div className="container-fluid" key={article._id}>
-        <h1>{article.title}</h1>
-        <p>{article.content}</p>
-        <p>{article.createdAt}</p>
-      </div>
+      <NavigationBar pageHdr={"Read More"} />
+      <BlogCard
+        title={article.title}
+        content={article.content}
+        createdTime={article.createdAt}
+        id={article._id}
+      />
+
     </div>
   );
 }
