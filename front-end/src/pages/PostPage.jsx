@@ -31,6 +31,7 @@ function PostPage() {
         content={article.content}
         createdTime={article.createdAt}
         id={article._id}
+        readMore={true}
       />
 
     </div>
