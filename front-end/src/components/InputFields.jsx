@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom"; // Import useHistory from react-router-dom
+import { useNavigate, useParams } from "react-router-dom"; 
 import "./stylesheet.css";
+import { getSpecificArticle, postArticle, updateArticle } from "../services/api";
 
 function InputFields(props) {
     const [title, setTitle] = useState('');
@@ -11,41 +12,24 @@ function InputFields(props) {
 
     function sendDataToNode() {
         const dataToSend = {
-            newTitle: title, // Replace this with the actual title input value
-            newContent: content, // Replace this with the actual content input value
+            newTitle: title, 
+            newContent: content,
         };
 
-        fetch("http://localhost:4000/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(dataToSend),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                if (data.success) {
-                    navigate("/")
-                } else {
-                    console.log(data.message);
-                }
-            })
-            .catch((error) => console.log(error));
+        postArticle(dataToSend, navigate);
     };
 
+    //returns single article based on id provided
     useEffect(() => {
         if (props.action === 'Update') {
-            fetch(`http://localhost:4000/update/${id}`)
-                .then((res) => res.json())
-                .then((data) => {
-                    console.log(id);
-                    console.log(data);
-                    setArticle(data);
-                    setTitle(data.title); // Set initial value for newTitle
-                    setContent(data.content); // Set initial value for newContent        
-                })
-                .catch((error) => console.log("Error fetching data:", error));
+            async function fetchArticle() {
+                const data = await getSpecificArticle(id, "update");
+                setArticle(data);
+                setTitle(data.title);
+                setContent(data.content);       
+            };
+
+            fetchArticle()
         }
     }, [id, props.action]);
 
@@ -54,27 +38,18 @@ function InputFields(props) {
         return <p>Loading...</p>;
     }
 
-    function handleUpdate() {
+    async function handleUpdate(id, title, content) {
         const dataToSend = {
-            newTitle: title, // Replace this with the actual title input value
-            newContent: content, // Replace this with the actual content input value
+          newTitle: title,
+          newContent: content,
         };
-        fetch(`http://localhost:4000/update/${id}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(dataToSend),
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                navigate("/");
-            })
-            .catch((error) => console.log(error));
-    }
-
-
+      
+        try {
+          await updateArticle(id, dataToSend, navigate);
+        } catch (error) {
+          console.error("Error updating article:", error);
+        }
+      }      
 
     return (
         <form>
@@ -103,11 +78,11 @@ function InputFields(props) {
                 </div>
                 <div className="submit-btn-div">
                     <button
-                        type="button" // Change the type to "button" to prevent form submission
+                        type="button"
                         className="submit-btn"
                         name="button"
-                        onClick={props.action === 'Add' ? sendDataToNode : handleUpdate}
-                    >
+                        onClick={() => (props.action === 'Add' ? sendDataToNode() : handleUpdate(id, title, content))}
+                        >
                         Publish
                     </button>
                 </div>
