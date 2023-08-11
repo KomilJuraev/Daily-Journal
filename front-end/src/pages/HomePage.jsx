@@ -18,7 +18,6 @@ function HomePage() {
 
     async function handleDelete(id) {
         const deletedId = await deleteSpecificArticle(id);
-
         if (deletedId === id) {
           setArticles((prevArticles) =>
             prevArticles.filter((article) => article._id !== id)
