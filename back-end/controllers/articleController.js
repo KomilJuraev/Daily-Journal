@@ -41,8 +41,10 @@ const updateArticle = async (req, res) => {
 
 const getAddArticlePageContent = async (req, res) => {
     try {
+        console.log("Hello World");
         await res.send("Hello Add");
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Error fetching data from the database" });
     }
 };
