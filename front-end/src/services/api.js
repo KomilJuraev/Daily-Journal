@@ -1,7 +1,5 @@
 const BASE_URL = "";
 
-
-
 if (process.env.NODE_ENV === "development") {
     BASE_URL = "http://localhost:4000";
   } else if (process.env.NODE_ENV === "production") {
