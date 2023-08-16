@@ -1,11 +1,10 @@
-const BASE_URL = "";
+let BASE_URL = "";
 
 if (process.env.NODE_ENV === "development") {
     BASE_URL = "http://localhost:4000";
   } else if (process.env.NODE_ENV === "production") {
     BASE_URL = "https://mern-daily-journal-backend.onrender.com";
   }
-  
   
 //Gets all the data from database
 export function fetchArticles() {
