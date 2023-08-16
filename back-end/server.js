@@ -17,7 +17,11 @@ app.use('/', homeRoutes)
 app.use(articleRoutes)
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
-    app.listen(process.env.PORT, () => {
+    let port = process.env.PORT;
+    if(port == null || port == "") {
+        port=4000;
+    }
+    app.listen(port, () => {
         console.log('Connected to database and Server start on port', process.env.PORT);
     })
 }) .catch((err) => {

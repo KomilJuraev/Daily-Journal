@@ -1,0 +1,5 @@
+/back-end/node-modules
+/front-end/node-modules
+npm-debug.log
+.DS_Store
+/*.env
