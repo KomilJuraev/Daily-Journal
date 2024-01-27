@@ -16,7 +16,9 @@ function HomePage() {
         fetchArticles()
             .then((data) => {
                 setArticles(data);
-                setLoading(false);
+                setTimeout(() => {
+                    setLoading(false);
+                }, 20000)
             })
     }, []);
 
