@@ -83,7 +83,7 @@ export async function deleteSpecificArticle(id) {
             },
         });
 
-        if (response.ok) {
+        if (response.ok) { 
             console.log("Successfully deleted");
             return id; // Return the id after successful deletion
         } else {
